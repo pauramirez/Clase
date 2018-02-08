@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Web Dev Tweets</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <h1>Web dev Tweets</h1>
+      </div>
+    </div> 
+
+    <input type="text" placeholder="Search by screen_name" id="inputSearch">
+    <button 
+      id="btnSearch"
+      type="button" 
+      class="btn btn-primary">Search</button>
+    <!-- row -->
+    <div class="row" id="tweets">
+    </div>
+
+    <div class="row">
+      <div>Made with ❤️  by John</div>
+    </div>
+      
+      
+    </div>
+  </div>
+
+
+  <script
+  src="http://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+  <script>
+/* global $ */
+"use strict";
+
+function update(data, filter) {
+  $("#tweets").empty();
+  var filteredData = data.filter(function (d) { 
+    return d.user.screen_name.startsWith(filter);
+  });
+  $("#tweets")
+    .append(filteredData.map(function (d) { 
+      var name = $("<div>")
+        .addClass("name")
+        .text(d.user.screen_name);
+      var photo = $("<img>")
+        .addClass("img-circle")
+        .attr("src", d.user.profile_image_url)
+        .attr("alt", d.user.screen_name + " photo");
+        
+      return $("<div>")
+        .addClass("col-sm-4")
+        .append(name)
+        .append(photo);
+    }));  
+}
+
+function callback(data) {
+  console.log("callback");
+  console.log(data);
+
+  
+  update(data, "");
+  $("#btnSearch")
+    .on("click", function () {
+      var filter = $("#inputSearch").val();
+      console.log(filter);
+      update(data, filter);
+    });
+}
+
+console.log("before json");
+$.getJSON("WebDevUniandes2018_w2.json",
+  callback);
+
+console.log("after json");
+
+  </script>
+
+  
+</body>
+</html>
